@@ -24,7 +24,7 @@ def transform(data: dict) -> pd.DataFrame:
     for i in range(len(temperature)):
         df_hourly[temperature[i]] = (df_hourly[temperature[i]] - 32) * 5 / 9
     # Переводим узлы в м/c
-    speed=['ind_speed_10m', 'wind_speed_80m']
+    speed=['wind_speed_10m', 'wind_speed_80m']
     for i in range(len(speed)):
         df_hourly[speed[i]] = df_hourly[speed[i]] * 1.852 / 3.6
     # Переводим футы в метры
@@ -297,4 +297,5 @@ def main():
             sys.exit(1)
 
 if __name__ == "__main__":
+
     main()
