@@ -1,0 +1,35 @@
+services:
+  # Задаем сервис базы данных postgresql
+  db:
+  # Определяем образ postresql и имя контейнера
+    image: postgres:13
+    container_name: postgres_db
+  # Определяем переменные окружения для настройки postgresql
+    environment:
+      POSTGRES_USER: anya_shcherba
+      POSTGRES_PASSWORD: Qq123456
+      POSTGRES_DB: weather_db
+   # Пробрасываем порт 5432 из контейнера на хост
+    ports:
+      - "5432:5432"
+  # Задаем постоянное хранилище для данных БД
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+  
+  # Задаем сервис ETL-приложения
+  etl_app:
+  # Собираем образ из Dockerfile и определяем имя контейнера
+    build: ./etl_app
+    container_name: etl_app
+  # Задаем зависимость запуска от готовности db
+    depends_on:
+      - db
+  # Монтируем директорию data для обмена файлами
+    volumes:
+      - ./data:/app/data
+  # Задаем пееременные окружения для мгновенного вывода логов python
+    environment:
+      PYTHONUNBUFFERED: 1
+
+volumes:
+  postgres_data:
